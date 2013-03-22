@@ -1,0 +1,57 @@
+## usage:
+
+## write.simple(snp.matrix, a1, a2, output.file)
+
+if(FALSE) {
+
+  source("/home/chrisw/local/R/scripts/write_simple2.R")
+library(snpStats)
+data(testdata)
+A<-Autosomes[1:10,1:20]
+a1 <- rep("A",20)
+a2 <- rep("G",20)
+write.simple(A,a1,a2,file="kk.txt")
+write.simple(A,a1,a2,file="kkbp.txt",bp=1:20)
+
+}
+
+
+## a1 -> uncounted allele
+## a2 -> counted allele
+dyn.load("~/local/R/src/write_simple.so")
+write.simple <- function(X,a1,a2,
+                         file,fsep="\t",gsep="",nullallele='N',write.header=TRUE,
+                         transpose=FALSE,
+                         write.sampleid=TRUE,bp=NULL,num.coding=FALSE) {
+  if (!is(X, "SnpMatrix"))
+    stop("argument must be a SnpMatrix object")
+  if(any(a1=="" | is.na(a1) | a2=="" | is.na(a2) | a1==a2))
+    stop("alleles must be non-missing characters, and each pair must contain different bases")
+  if(length(a1)!=ncol(X) | length(a1)!=length(a2))
+    stop("require ncol(X) == length(a1) == length(a2)")
+  if(!is.null(bp) & length(bp)!=length(a1))
+    stop("require ncol(X) == length(bp)")
+  if(nchar(fsep)>1 || nchar(gsep)>1)
+    stop("fsep and gsep must be \"\" or single character strings\n")
+  unlink(file)
+  bp.do <- if(!is.null(bp)) 1 else 0 # 1 if include bp column after snp id
+  if(transpose) { write.header <- FALSE }
+  if(write.header) {
+    if(write.sampleid)
+      cat("sampleid",fsep,sep="",file=file)
+    cat(colnames(X),file=file,sep=fsep,append=TRUE)
+    cat("\n",file=file,append=TRUE)
+  }
+  res <- .C("write_simple", X@.Data,
+            as.character(a1), as.character(a2),
+            as.integer(bp),as.integer(bp.do),
+            as.character(fsep),as.character(gsep),
+            as.integer(num.coding),as.character(nullallele),as.integer(transpose),
+            as.character(file), as.integer(nrow(X)),
+            as.integer(ncol(X)), rownames(X),
+            colnames(X), logical(1))
+  error <- res[[16]]
+  if (error == 1)
+    stop("Couldn't write to file",file)
+  return(c(nrow(X), ncol(X)))
+}
