@@ -145,6 +145,25 @@ write.snphap <- function(X, a1=NULL, a2=NULL, file) {
     a1 <- rep("1",nsnps)
     a2 <- rep("2",nsnps)
   }
+  valid.num <- as.character(1:2)
+  valid.nuc <- c("A","C","G","T")
+  coding <- "numeric"
+  a1 <- as.character(a1)
+  a2 <- as.character(a2)
+  alleles <- c(unique(a1),unique(a2))
+  if(!all(alleles %in% valid.num)) {
+    coding <- "nucleotide"
+    if(!all(alleles %in% valid.nuc)) {
+      warning("detected nucleotide coding, but invalid alleles found.  Will recode to A/T.  To avoid this, please use write.simple(), but note that snphap recognises only 0/1/2 or A/C/G/T/0 coding.")
+      which.bad <- which(!(a1 %in% valid.nuc | a2 %in% valid.nuc))
+      anames <- colnames(X)
+      for(i in which.bad) {
+        cat("recoding SNP",i,":",anames[i],"from",a1[i],"/",a2[i]," -> A / T.\n")
+        a1[i] <- "A"
+        a2[i] <- "T"
+      }
+    }
+  }  
   write.simple(X, a1=a1, a2=a2, gsep=" ",
                nullallele='0', file=file,
                write.sampleid=FALSE)
