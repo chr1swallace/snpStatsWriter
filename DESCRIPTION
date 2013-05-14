@@ -16,3 +16,5 @@ Collate:
     'snpStatsWriter-package.R'
     'write.R'
 OS_type: unix
+Suggests: knitr
+VignetteBuilder: knitr

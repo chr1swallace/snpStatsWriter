@@ -136,7 +136,7 @@ write.simple <- function(X,a1,a2,
 #'A.small <- Autosomes[1:6,1:10]
 #'f <- tempfile()
 #'## write in suitable format for snphap
-#'write.simple(A.small, file=f)
+#'write.snphap(A.small, file=f)
 #'unlink(f)
 #'
 write.snphap <- function(X, a1=NULL, a2=NULL, file) {  

@@ -30,7 +30,7 @@ data(testdata,package="snpStats")
 A.small <- Autosomes[1:6,1:10]
 f <- tempfile()
 ## write in suitable format for snphap
-write.simple(A.small, file=f)
+write.snphap(A.small, file=f)
 unlink(f)
 }
 \author{

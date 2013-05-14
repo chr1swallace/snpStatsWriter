@@ -1,0 +1,8 @@
+<!--
+%\VignetteEngine{knitr}
+%\VignetteIndexEntry{snpStatsWriter vignette}
+-->
+
+This is a package to write snpStats objects to disk in formats
+    suitable for reading by snphap, phase, mach, IMPUTE, beagle, and
+    (almost) anything else that expects a rectangular format.
