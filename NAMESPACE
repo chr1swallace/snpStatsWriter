@@ -1,7 +1,0 @@
-export(write.beagle)
-export(write.impute)
-export(write.mach)
-export(write.phase)
-export(write.simple)
-export(write.snphap)
-useDynLib(snpStatsWriter)
