@@ -5,6 +5,11 @@
 
 # snpStatsWriter
 
+<font color="grey">
+*Chris Wallace // [web](http://www-gene.cimr.cam.ac.uk/staff/wallace) // [email](mailto:chris.wallace at cimr.cam.ac.uk)*  
+</font>
+
+
 This is a package to write snpStats objects to disk in formats
 suitable for reading by snphap, phase, mach, IMPUTE, beagle, and
 (almost) anything else that expects a rectangular format.
@@ -12,6 +17,7 @@ suitable for reading by snphap, phase, mach, IMPUTE, beagle, and
 We will load a small dataset included in the snpStats package
 
 ```{r}
+library(snpStatsWriter)
 data(testdata,package="snpStats")
 A.small <- Autosomes[1:6,1:10]
 nsnps <- ncol(A.small)

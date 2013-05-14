@@ -1,8 +1,13 @@
+2013-05-14  Chris Wallace  <chris.wallace@cimr.cam.ac.uk>
+
+	* v1.5
+	added vignette
+
 2013-04-08  Chris Wallace  <chris.wallace@cimr.cam.ac.uk>
 
 	* v1.04
 	editted write.snphap function to enforce snphap default allele
-	coding, and recode indels where necessary
+	coding, and recode indels where necessary.
 
 2013-03-20  Chris Wallace  <chris.wallace@cimr.cam.ac.uk>
 
