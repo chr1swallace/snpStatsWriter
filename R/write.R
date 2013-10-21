@@ -365,3 +365,52 @@ write.phase <- function(X,a1=rep(1,ncol(X)),a2=rep(2,ncol(X)),bp=NULL,file) {
             as.integer(!is.null(bp)), as.integer(bp), get.eol(),PACKAGE="snpStatsWriter")
   return(c(nrow(X), ncol(X)))
 }
+
+################################################################################
+
+##' write an sbams format file
+##'
+##' sbams is software from Xiaoquan Wen at https://github.com/xqwen/sbams
+##' @title write.sbams
+##' @inheritParams write.simple
+##' @param response vector or matrix of response variables. rows index subjects, columns index variables
+##' @return  No return value, but has the side effect of writing specified output
+##' file.
+##' @export
+##' @author Chris Wallace
+#'@keywords manip
+#'@examples
+#'
+#'data(testdata,package="snpStats")
+#'A.small <- Autosomes[1:6,1:10]
+#'R <- matrix(rnorm(12),ncol=2)
+#' colnames(R) <- c("var1","var2")
+#'f <- tempfile()
+#'
+#'## write in suitable format for sbams
+#'write.sbams(X=A.small, response=R, file=f)
+#'unlink(f)
+#'
+write.sbams <- function(X,response,file) {
+  if(is.data.frame(response)) ## data.frame response
+    response <- as.matrix(response)
+  if(!is.matrix(response)) ## vector response
+    response <- as.matrix(response,ncol=1)
+  if(nrow(response)!=nrow(X))
+    stop("reponse matrix must have equal nrow() to X")
+
+  ## genotypes need to be numeric
+  N <- as(X,"numeric")
+
+  ## all variables need to be zero centred, then transposed to be write a variable on each line
+  N <- t(scale(N, center=TRUE, scale=FALSE))
+  response <- t(scale(response, center=TRUE, scale=FALSE))
+
+  ## add "response" or "covariate" to each rowname
+  rownames(N) <- paste("covariate",rownames(N),sep=" ")
+  rownames(response) <- paste("response",rownames(response),sep=" ")
+    
+  ## write the file
+  write.table(response,file=file,row.names=TRUE,col.names=FALSE,quote=FALSE)
+  write.table(N,file=file,row.names=TRUE,col.names=FALSE,quote=FALSE,append=TRUE)  
+}
