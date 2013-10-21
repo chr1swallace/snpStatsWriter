@@ -13,11 +13,12 @@ get.eol <- function() {
     eol <- "\r\n"
   return(eol)
 }
-#'Flexible writing of snpStats objects to flat files
+#'Fast and flexible writing of snpStats objects to flat files
 #'
-#'Different genetics phasing programs (beagle, mach, impute, phase/fastPhase,
-#'snphap, etc) have different requirements for input files.  These functions
-#'aim to make creating these files from a SnpMatrix object straightfoward.
+#'Different genetics phasing and analysis programs (beagle, mach,
+#' impute, snptest, phase/fastPhase, snphap, etc) have different requirements
+#' for input files.  These functions aim to make creating these files
+#' from a SnpMatrix object straightfoward.
 #'
 #'It's written in C, so should be reasonably fast even for large datasets.
 #'
