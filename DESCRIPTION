@@ -1,15 +1,15 @@
 Package: snpStatsWriter
 Type: Package
 Title: Flexible writing of snpStats objects to flat files
-Version: 1.5-5
-Date: 2013-10-21
+Version: 1.5-6
+Date: 2013-12-05
 Author: Chris Wallace
 Maintainer: Chris Wallace <chris.wallace@cimr.cam.ac.uk>
 Description: Write snpStats objects to disk in formats suitable for reading by
     snphap, phase, mach, IMPUTE, beagle, and (almost) anything else that
     expects a rectangular format.
 Depends:
-    snpStats
+    snpStats, colorspace
 License: GPL
 LazyLoad: yes
 Collate:
