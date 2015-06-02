@@ -1,7 +1,24 @@
+2015-06-02  Chris Wallace <chris.wallace@cimr.cam.ac.uk>
+
+	* v1.5-9
+	* R/write.R: write.snphap() now uses 'N' for null alleles in nucleotide coding
+
+2014-08-18  Chris Wallace <chris.wallace@cimr.cam.ac.uk>
+
+	* v1.5-8
+	* R/write.R: write.impute() now creates sample file too
+
+2014-08-05  Chris Wallace  <chris.wallace@cimr.cam.ac.uk>
+
+	* v1.5-7
+	* src/writers.c (write_impute): 
+	* src/write.R (write.impute): added option to explicitly provide
+	rsids, previously assumed to be the colnames() of X
+
 2013-10-21  Chris Wallace  <chris.wallace@cimr.cam.ac.uk>
 
 	* v1.5-6
-	* src/write.c (write_phase): fixed bug in defintion of astr
+	* src/writers.c (write_phase): fixed bug in defintion of astr
 
 2013-10-21  Chris Wallace  <chris.wallace@cimr.cam.ac.uk>
 

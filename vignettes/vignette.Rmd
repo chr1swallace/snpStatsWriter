@@ -50,9 +50,9 @@ unlink(mf)
 
 ```{r}
 pf <- tempfile()
-write.impute(A.small, a1=rep("1",nsnps), a2=rep("2",nsnps), bp=1:nsnps, pedfile=pf)
-head(read.table(pf))
-unlink(pf)
+write.impute(A.small, a1=rep("1",nsnps), a2=rep("2",nsnps), bp=1:nsnps, fileroot=pf)
+unlink(paste0(pf,".gen"))
+unlink(paste0(pf,".sample"))
 ```
 
 ## beagle

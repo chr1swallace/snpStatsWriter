@@ -1,3 +1,5 @@
+#'@importClassesFrom snpStats SnpMatrix XSnpMatrix
+
 ## helper functions, not exported
 check.args <- function(X,a1,a2) {
   if (!is(X, "snp.matrix") & !is(X, "SnpMatrix"))
@@ -155,7 +157,7 @@ write.snphap <- function(X, a1=NULL, a2=NULL, file) {
   if(!all(alleles %in% valid.num)) {
     coding <- "nucleotide"
     if(!all(alleles %in% valid.nuc)) {
-      warning("detected nucleotide coding, but invalid alleles found.  Will recode to A/T.  To avoid this, please use write.simple(), but note that snphap recognises only 0/1/2 or A/C/G/T/0 coding.")
+      warning("detected nucleotide coding, but invalid alleles found.  Will recode to A/T.  To avoid this, please use write.simple(), but note that snphap recognises only 0/1/2 or A/C/G/T/N coding.")
       which.bad <- which(!(a1 %in% valid.nuc | a2 %in% valid.nuc))
       anames <- colnames(X)
       for(i in which.bad) {
@@ -164,9 +166,10 @@ write.snphap <- function(X, a1=NULL, a2=NULL, file) {
         a2[i] <- "T"
       }
     }
-  }  
+  }
   write.simple(X, a1=a1, a2=a2, gsep=" ",
-               nullallele='0', file=file,
+               nullallele=if(coding=="numeric") {'0'} else {'N'},
+               file=file,
                write.sampleid=FALSE)
 }
 
@@ -236,8 +239,9 @@ write.mach <- function(X,a1,a2,pedfile,mfile,
 ##' 
 #' @export
 ##' @inheritParams write.simple
-##' @param pedfile Output file name. 
-##'@param snp.id vector of snp ids
+##' @param fileroot Root of output file names. fileroot.gen and fileroot.sample will be created.
+##' @param snp.id vector of snp ids (if empty, will set to S1...Sn)
+##' @param rs.id vector of rs ids (if empty, will set to rownames(X))
 ##' 
 ##' @return No return value, but has the side effect of writing specified output
 ##' files.
@@ -251,19 +255,27 @@ write.mach <- function(X,a1,a2,pedfile,mfile,
 #'
 #'## write in suitable format for IMPUTE
 #'nsnps <- ncol(A.small)
-#'write.impute(A.small, a1=rep("1",nsnps), a2=rep("2",nsnps), bp=1:nsnps, pedfile=pf)
+#'write.impute(A.small, a1=rep("1",nsnps), a2=rep("2",nsnps), bp=1:nsnps, fileroot=pf)
 #'unlink(pf)
 #'
-write.impute <- function(X,a1,a2,bp,pedfile,snp.id=NULL) {
+write.impute <- function(X,a1,a2,bp,fileroot,rs.id=NULL,snp.id=NULL) {
   check.args(X,a1,a2)
   if(length(bp)!=ncol(X))
     stop("require ncol(X) == length(bp)")
   if(is.null(snp.id))
     snp.id <- sprintf("SNP%s",1:ncol(X))
+  if(is.null(rs.id))
+    rs.id <- colnames(X)
+  genfile <- paste0(fileroot,".gen")
+  samplefile <- paste0(fileroot,".sample")
   res <- .C("write_impute", X@.Data, as.character(a1), as.character(a2),
-            as.integer(bp), as.character(pedfile), as.integer(nrow(X)),
+            as.integer(bp), as.character(genfile), as.integer(nrow(X)),
             as.integer(ncol(X)), rownames(X),
-            colnames(X), as.character(snp.id), get.eol(),PACKAGE="snpStatsWriter")
+            as.character(rs.id), as.character(snp.id),  get.eol(),PACKAGE="snpStatsWriter")
+ cat("ID_1 ID_2 missing\n0 0 0\n",file=samplefile)
+  write.table(data.frame(v1=rownames(X@.Data),v2=rownames(X@.Data),v3=0,stringsAsFactors=FALSE),
+              row.names=FALSE,col.names=FALSE,quote=FALSE,sep=" ",
+              file=samplefile,append=TRUE)
   return(c(nrow(X), ncol(X)))
 }
 

@@ -1,21 +1,18 @@
 Package: snpStatsWriter
 Type: Package
-Title: Flexible writing of snpStats objects to flat files
-Version: 1.5-6
-Date: 2013-12-05
+Title: Flexible Writing of snpStats Objects to Flat Files
+Version: 1.5-9
+Date: 2015-06-02
 Author: Chris Wallace
 Maintainer: Chris Wallace <chris.wallace@cimr.cam.ac.uk>
 Description: Write snpStats objects to disk in formats suitable for reading by
     snphap, phase, mach, IMPUTE, beagle, and (almost) anything else that
     expects a rectangular format.
-Depends:
-    snpStats, colorspace
+Depends: snpStats
 License: GPL
 LazyLoad: yes
-Collate:
-    'snpStatsWriter-package.R'
-    'write.R'
+Collate: 'snpStatsWriter-package.R' 'write.R'
 OS_type: unix
-Suggests:
-    knitr
+Suggests: knitr
 VignetteBuilder: knitr
+Packaged: 2014-08-05 12:39:11 UTC; chrisw

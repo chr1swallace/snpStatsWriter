@@ -367,7 +367,7 @@ void impute_allelestring(int idx, char *astr) {
 }
 
 void write_impute(char *x, char **a1, char **a2, int *bp, char **file, int *N, int *M,
-		  char **rnames, char **cnames, char **snpid, char **eol) {
+		  char **rnames, char **rsid, char **snpid, char **eol) {
   int nrow = *N;
   int ncol = *M;
   char *sep = " ";
@@ -386,7 +386,7 @@ void write_impute(char *x, char **a1, char **a2, int *bp, char **file, int *N, i
 // each line has format SNPj rs bp A1 A2 p11 p12 p22 p11 p12 p22 etc
   ij=0;
   for(j=0; j<ncol; j++) {
-    fprintf(outfile,"%s %s %d %s %s",snpid[j],cnames[j],bp[j],a1[j],a2[j]);
+    fprintf(outfile,"%s %s %d %s %s",snpid[j],rsid[j],bp[j],a1[j],a2[j]);
     for (i=0; i<nrow; i++) {
        fputs(sep,outfile);
        impute_allelestring((int) x[ij++], astr);
